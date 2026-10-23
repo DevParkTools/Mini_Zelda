@@ -76,6 +76,7 @@ canvas{width:100%;height:100%;display:block;image-rendering:pixelated}
 <button id="bGrid">격자 표시: 켜짐</button>
 <button id="bSnd">소리: 켜짐</button>
 <button id="bBgm">배경음악: 켜짐</button>
+<button id="bWipe">저장 데이터 삭제</button>
 <label id="volRow">마스터 볼륨 <b id="volVal">70%</b><input id="vol" type="range" min="0" max="100" step="5" value="70"></label>
 <button id="bFS">전체 화면: 켜기</button>
 <button id="bClose">계속하기</button>
@@ -118,14 +119,16 @@ const bGrid=document.getElementById('bGrid');
 const bSnd=document.getElementById('bSnd');
 const bBgm=document.getElementById('bBgm');
 const actsEl=document.getElementById('acts');
+const bWipe=document.getElementById('bWipe');
+let armedW=false;
 const volEl=document.getElementById('vol');
 const volVal=document.getElementById('volVal');
 const bClose=document.getElementById('bClose');
 const DX=[0,1,0,-1],DY=[-1,0,1,0],EDGE=['up','right','down','left'];
-const CH={'.':0,'#':1,'g':2,'t':3,'w':4,'p':5,',':5,'d':6,'b':7,'B':24,'c':8,'o':9,'u':11,'x':12,'_':13,'%':14,'s':15,'G':16,'L':18,'T':20,'i':21,'n':22,'k':23,'S':19,'R':25,'W':26,'Y':27,'Z':28,'f':29,'C':30,'q':31,'F':32,'r':33,'h':34};
-const SOLID=new Uint8Array([0,1,0,1,1,0,0,1,1,1,1,1,1,0,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,0,0]);
-const OBJ=new Uint8Array(35);
-[7,8,9,10,11,12,20,21,22,23,24,30,32,34].forEach(i=>{OBJ[i]=1});
+const CH={'.':0,'#':1,'g':2,'t':3,'w':4,'p':5,',':5,'d':6,'b':7,'B':24,'c':8,'o':9,'u':11,'x':12,'_':13,'%':14,'s':15,'G':16,'L':18,'T':20,'i':21,'n':22,'k':23,'S':19,'R':25,'W':26,'Y':27,'Z':28,'f':29,'C':30,'q':31,'F':32,'r':33,'h':34,'j':35};
+const SOLID=new Uint8Array([0,1,0,1,1,0,0,1,1,1,1,1,1,0,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,0,0,1]);
+const OBJ=new Uint8Array(36);
+[7,8,9,10,11,12,20,21,22,23,24,30,32,34,35].forEach(i=>{OBJ[i]=1});
 const BASEC=[];
 BASEC[0]='#c9a66b';BASEC[1]='#5b4636';BASEC[2]='#4caf50';BASEC[3]='#4caf50';BASEC[4]='#1976d2';BASEC[5]='#d7b377';BASEC[6]='#2b1b12';BASEC[13]='#3c3f58';BASEC[14]='#1f2133';BASEC[25]='#b0413e';BASEC[26]='#e6d5ae';BASEC[27]='#2e86ab';BASEC[28]='#7a5a3a';BASEC[29]='#e8dcc0';BASEC[31]='#1f2133';BASEC[33]='#8e2b3a';
 
@@ -265,9 +268,9 @@ village:{fl:2,kind:'out',map:[
 "tggugggggggguutt",
 "twwgggggggggggtt",
 "twwgggggggggggtt",
-"tttttttttttttttt"],
+"tttttttggttttttt"],
 exits:[{x:4,y:3,to:'house',tx:7,ty:11,dir:0},{x:12,y:3,to:'shop',tx:7,ty:11,dir:0}],
-edges:{right:'meadow'},
+edges:{right:'meadow',down:'farm'},name:'별빛 마을',
 npcs:[[8,6,'grandpa','#8d6e63','#eceff1'],[6,10,'kid','#fbc02d','#6d4c41'],[12,8,'girl','#ab47bc','#5d4037']],enemies:[],blocks:[],
 labels:[{x:64,y:29,t:'우리 집',c:'#8d5a2b'},{x:192,y:29,t:'상점',c:'#c62828'}],
 signs:{'8,4':['별빛 마을','오늘 밤은 마을의 등불이 모두 꺼져 있다.']}},
@@ -290,9 +293,9 @@ exits:[{x:7,y:12,to:'village',tx:12,ty:4,dir:2},{x:8,y:12,to:'village',tx:12,ty:
 edges:{},npcs:[[7,2,'merchant','#00897b','#4e342e']],enemies:[],blocks:[],labels:[{x:128,y:8,t:'상점',c:'#c62828'}],signs:{}},
 meadow:{fl:2,kind:'out',map:[
 "tttttttttttttttt",
-"ttttxttttttttttt",
-"tgugggggoggggutt",
-"tgghhhgggggggggt",
+"ttttxttttttttctt",
+"tgugggggoggggGtt",
+"tgghhhgggggjgggt",
 "gggggggggggggggg",
 "pppppppppppppppp",
 "ggghhhhggggggggg",
@@ -302,11 +305,11 @@ meadow:{fl:2,kind:'out',map:[
 "tgguggggggggggut",
 "tggggggggoggguut",
 "tgggggggggggggut",
-"tttttttttttttttt"],
+"tttttttggttttttt"],
 exits:[{x:4,y:1,to:'cave',tx:7,ty:11,dir:0}],
-edges:{left:'village',right:'forest'},
+edges:{left:'village',right:'forest',down:'lake'},chest:'gems',name:'초원',
 npcs:[[12,3,'traveler','#3949ab','#212121']],
-enemies:[[6,3,'s'],[11,7,'s'],[8,10,'s'],[3,7,'s'],[13,9,'b']],blocks:[],signs:{}},
+enemies:[[6,3,'s'],[11,7,'s'],[8,10,'s'],[3,7,'s'],[12,8,'b']],blocks:[],signs:{}},
 cave:{fl:5,kind:'in',map:[
 "################",
 "#,,,,,,,,,,,,,,#",
@@ -338,9 +341,9 @@ forest:{fl:2,kind:'out',map:[
 "tggggggtggggggtt",
 "tgghhhhgggggggut",
 "tgggoggggggggggt",
-"tttttttttttttttt"],
+"tttttttggttttttt"],
 exits:[{x:12,y:2,to:'cave2',tx:7,ty:11,dir:0}],
-edges:{left:'meadow',right:'castle'},
+edges:{left:'meadow',right:'castle',down:'ruins'},name:'속삭이는 숲',
 npcs:[[4,3,'hermit','#546e7a','#cfd8dc']],
 enemies:[[6,2,'s'],[10,8,'s'],[13,3,'b'],[8,10,'b'],[11,6,'k'],[3,9,'s']],blocks:[],
 signs:{}},
@@ -375,9 +378,9 @@ castle:{fl:2,kind:'out',map:[
 "tgggugggggggggtt",
 "tggggggggggggutt",
 "tgghhhhggggggggt",
-"tttttttttttttttt"],
+"tttttttggttttttt"],
 exits:[{x:3,y:3,to:'d1',tx:7,ty:11,dir:0}],
-edges:{left:'forest'},npcs:[],enemies:[[8,7,'k'],[12,6,'k'],[10,10,'s']],blocks:[],
+edges:{left:'forest',down:'grave'},name:'달무리 성 앞',npcs:[],enemies:[[8,7,'k'],[12,6,'k'],[10,10,'s']],blocks:[],
 signs:{'6,4':['달무리 성','성문이 굳게 닫혀 있다.','성벽 위의 병사들 눈이 붉게 빛나고 있다...']}},
 d1:{fl:13,kind:'dun',map:[
 "%%%%%%%dd%%%%%%%",
@@ -469,6 +472,148 @@ d5:{fl:13,kind:'dun',shut:true,map:[
 exits:[{x:7,y:12,to:'d2',tx:7,ty:2,dir:2},{x:8,y:12,to:'d2',tx:8,ty:2,dir:2},{x:7,y:0,to:'boss',tx:7,ty:11,dir:0},{x:8,y:0,to:'boss',tx:8,ty:11,dir:0}],
 edges:{},npcs:[],enemies:[[7,4,'K']],blocks:[],signs:{},
 hint:['(철창 너머가 탑으로 이어지는 문이다. 그 앞을 거대한 기사가 막고 있다!)','(공격하면서 움직여 거리를 유지하자. 기사가 팔을 뒤로 뺄 때가 공격 신호다.)']},
+farm:{fl:2,kind:'out',name:'노을 농장',map:[
+"tttttttggttttttt",
+"tgghhhgggggggxgt",
+"tgRRRRgggggggggt",
+"tgRRRRgggggggggt",
+"tgWWdWgggggggggg",
+"tgggpggggggggggg",
+"tgogpgggghhhhggg",
+"tgggpppppppppggg",
+"tggggggggghhhggg",
+"tgggugggggggggtt",
+"tghhhgggggoggutt",
+"tggggggggggggutt",
+"tgggggggggggggtt",
+"tttttttttttttttt"],
+exits:[{x:4,y:4,to:'barn',tx:7,ty:11,dir:0},{x:13,y:1,to:'cave3',tx:7,ty:11,dir:0}],
+edges:{up:'village',right:'lake'},
+npcs:[[8,6,'farmer','#7cb342','#ffd54f']],enemies:[[10,8,'s'],[5,10,'s'],[12,5,'b']],blocks:[],signs:{}},
+barn:{fl:0,kind:'in',map:[
+"################",
+"#oo..kkkk....oo#",
+"#..............#",
+"#..T....T......#",
+"#..............#",
+"#..............#",
+"#..............#",
+"#..............#",
+"#..............#",
+"#..............#",
+"#.............o#",
+"#..............#",
+"#......dd......#",
+"################"],
+exits:[{x:7,y:12,to:'farm',tx:4,ty:5,dir:2},{x:8,y:12,to:'farm',tx:4,ty:5,dir:2}],
+edges:{},npcs:[[7,4,'farmer2','#8d6e63','#fff8e1']],enemies:[],blocks:[],signs:{}},
+cave3:{fl:5,kind:'in',map:[
+"################",
+"#,,,,,,,,,,,,,,#",
+"#,,,,,,,,,,,,,,#",
+"#,,,,,,c,,,,,,,#",
+"#,,,,,,,,,,,,,,#",
+"#,,,,,,,,,,,,,,#",
+"#,,,,,,,,,,,,,,#",
+"#,,,,,,,,,,,,,,#",
+"#,,,,,,,,,,,,,,#",
+"#,,,,,,,,,,,,,,#",
+"#,,,,,,,,,,,,,,#",
+"#,,,,,,,,,,,,,,#",
+"#,,,,,,dd,,,,,,#",
+"################"],
+exits:[{x:7,y:12,to:'farm',tx:13,ty:2,dir:2},{x:8,y:12,to:'farm',tx:13,ty:2,dir:2}],
+edges:{},npcs:[],enemies:[[3,6,'b'],[11,6,'b'],[7,8,'s']],blocks:[],chest:'heart',signs:{}},
+lake:{fl:2,kind:'out',name:'거울 호수',map:[
+"tttttttggttttttt",
+"tggggggggggggggt",
+"tgggwwwwwwwwwggt",
+"tgggwwwwwwwwwggt",
+"gggggwwwwwwwwggg",
+"gggggwwwwwwwwggg",
+"ggggpppppcpwwggg",
+"gggggwwwwwwwwggg",
+"gggggwwwwwwwwggg",
+"tgghhgwwwwwgghgt",
+"tgggggggggggggut",
+"tgugggggggoggggt",
+"tggggggggggggggt",
+"tttttttttttttttt"],
+exits:[],
+edges:{up:'meadow',left:'farm',right:'ruins'},chest:'rich',
+npcs:[[3,3,'fisher','#00838f','#eeeeee']],enemies:[[3,10,'s'],[12,10,'s'],[13,2,'b'],[2,6,'b']],blocks:[],signs:{}},
+ruins:{fl:2,kind:'out',name:'잊힌 유적',map:[
+"tttttttggttttttt",
+"tcuggggggggggggt",
+"tuggggiggggiggit",
+"tggggggggggggggt",
+"gggiggggggggiggg",
+"ggggggggFggggggg",
+"gggiggggggggiggg",
+"gggggggggggggggg",
+"gggiggggggggiggg",
+"tgggggghhhgggggt",
+"tggggggggggggggt",
+"tgugggggggggggut",
+"tgggggggoggggggt",
+"tttttttttttttttt"],
+exits:[],
+edges:{up:'forest',left:'lake',right:'grave'},chest:'rich',
+npcs:[[10,3,'scholar','#6a1b9a','#e0e0e0']],enemies:[[6,6,'k'],[10,7,'k'],[4,9,'b'],[12,9,'b']],blocks:[],signs:{}},
+grave:{fl:2,kind:'out',name:'달무리 묘지',map:[
+"tttttttggttttttt",
+"tggggggggggggggt",
+"tgiggigggigggigt",
+"tggggggggggggggt",
+"gggggggggggggggt",
+"ggiggigggigggigt",
+"gggggggggggggggt",
+"ggiggigggigggigt",
+"gggggggggggggggt",
+"tgggggggggggggtt",
+"tgxggggggggggutt",
+"tggggggggggggutt",
+"tgggggggggoggggt",
+"tttttttttttttttt"],
+exits:[{x:2,y:10,to:'crypt1',tx:7,ty:11,dir:0}],
+edges:{up:'castle',left:'ruins'},
+npcs:[],enemies:[[6,4,'k'],[10,7,'k'],[4,6,'b'],[12,3,'b'],[8,10,'s']],blocks:[],signs:{}},
+crypt1:{fl:13,kind:'dun',shut:true,name:'낡은 납골당',map:[
+"%%%%%%%dd%%%%%%%",
+"%______SS______%",
+"%_i____________%",
+"%______________%",
+"%__%%______%%__%",
+"%__%%______%%__%",
+"%______________%",
+"%_i__________i_%",
+"%______________%",
+"%______________%",
+"%_i__________i_%",
+"%______________%",
+"%%%%%%%dd%%%%%%%",
+"%%%%%%%%%%%%%%%%"],
+exits:[{x:7,y:12,to:'grave',tx:2,ty:11,dir:2},{x:8,y:12,to:'grave',tx:2,ty:11,dir:2},{x:7,y:0,to:'crypt2',tx:7,ty:11,dir:0},{x:8,y:0,to:'crypt2',tx:8,ty:11,dir:0}],
+edges:{},npcs:[],enemies:[[4,3,'k'],[11,3,'k'],[7,6,'b'],[3,9,'b'],[12,9,'b']],blocks:[],signs:{},
+hint:['(오래된 납골당이다. 서늘한 기운이 감돈다.)','(적을 모두 쓰러뜨리면 북쪽 철창이 열릴 것 같다.)']},
+crypt2:{fl:13,kind:'dun',name:'납골당 깊은 곳',map:[
+"%%%%%%%%%%%%%%%%",
+"%______________%",
+"%_i____c_____i_%",
+"%______________%",
+"%__%%______%%__%",
+"%__%%______%%__%",
+"%______________%",
+"%______________%",
+"%_i__________i_%",
+"%______________%",
+"%_i__________i_%",
+"%______________%",
+"%%%%%%%dd%%%%%%%",
+"%%%%%%%%%%%%%%%%"],
+exits:[{x:7,y:12,to:'crypt1',tx:7,ty:2,dir:2},{x:8,y:12,to:'crypt1',tx:8,ty:2,dir:2}],
+edges:{},npcs:[],enemies:[[7,6,'K'],[4,8,'b'],[11,8,'b']],blocks:[],chest:'heart',signs:{},
+hint:['(납골당 가장 깊은 곳이다. 반짝이는 상자가 보인다.)','(그 앞을 기사가 지키고 있다!)']},
 boss:{fl:13,kind:'dun',map:[
 "%%%%%%%%%%%%%%%%",
 "%____%___%_____%",
@@ -563,6 +708,7 @@ case 3:
 fr(g,'rgba(0,0,0,.25)',x+2,y+13,13,3);
 fr(g,'#5d4037',x+6,y+10,4,6);
 fr(g,'#1b5e20',x+1,y+1,14,12);fr(g,'#2e7d32',x+2,y+2,12,10);fr(g,'#43a047',x+4,y+3,5,4);fr(g,'#81c784',x+5,y+4,2,2);fr(g,'#1b5e20',x+9,y+9,5,3);break;
+case 35:fr(g,'rgba(0,0,0,.25)',x+2,y+13,12,3);fr(g,'#546e7a',x+3,y+11,10,4);fr(g,'#78909c',x+3,y+11,10,1);fr(g,'#0277bd',x+4,y+5,8,6);fr(g,'#4fc3f7',x+5,y+4,6,7);fr(g,'#29b6f6',x+6,y+2,4,3);fr(g,'#e1f5fe',x+6,y+3,2,6);fr(g,'#0277bd',x+10,y+6,2,5);break;
 case 34:fr(g,'#2e7d32',x+1,y+9,3,6);fr(g,'#43a047',x+2,y+3,2,10);fr(g,'#66bb6a',x+3,y+2,1,6);fr(g,'#2e7d32',x+6,y+6,3,9);fr(g,'#43a047',x+7,y+1,2,12);fr(g,'#81c784',x+8,y+1,1,6);fr(g,'#2e7d32',x+11,y+8,3,7);fr(g,'#43a047',x+12,y+3,2,10);fr(g,'#66bb6a',x+12,y+3,1,5);fr(g,'#1b5e20',x+1,y+14,14,2);break;
 case 6:fr(g,'#6d4c41',x+1,y,14,T);fr(g,'#8d6e63',x+1,y,14,2);fr(g,'#1a100b',x+3,y+3,10,13);fr(g,'#2b1b12',x+3,y+3,10,2);break;
 case 7:fr(g,'#6d4c41',x,y,T,T);fr(g,'#eceff1',x+1,y+3,14,13);fr(g,'#ffffff',x+3,y+4,10,5);fr(g,'#cfd8dc',x+3,y+10,10,5);fr(g,'#5d4037',x,y,T,3);break;
@@ -597,7 +743,7 @@ r.an.length=0;
 for(let y=0;y<ROWS;y++)for(let x=0;x<COLS;x++){
 const id=r.tiles[y*COLS+x];
 drawTile(r.cg,id,x*T,y*T,r.fl);
-if(id===4||id===31||id===32||id===15)r.an.push(x*T,y*T,id);
+if(id===4||id===31||id===32||id===15||id===35)r.an.push(x*T,y*T,id);
 }
 r.dirty=false;
 }
@@ -895,7 +1041,56 @@ b.tx=b.sx;b.ty=b.sy;b.fx=b.sx;b.fy=b.sy;b.mt=1;b.moving=false;b.x=b.sx*T;b.y=b.s
 clearSpawn();
 }
 
+function curKey(){
+for(const k in rooms)if(rooms[k]===cur)return k;
+return 'house';
+}
+
+function saveRun(){
+if(flags.asleep||flags.bossDead||flags.bossFight||B.active||cur===rooms.boss||mode==='end')return;
+try{
+const rs={};
+for(const k in rooms){
+const r=rooms[k];
+rs[k]={t:Array.from(r.tiles),s:r.solved?1:0,c:r.cleared?1:0,n:r.seen?1:0,e:r.enemies.map(e=>e.alive?1:0),b:r.blocks.map(b=>[b.tx,b.ty])};
+}
+localStorage.setItem('zs_run',JSON.stringify({S:S,flags:flags,tp:tPlay,bc:bombCap,room:curKey(),tx:P.tx,ty:P.ty,rs:rs}));
+}catch(e){}
+}
+
+function loadRun(){
+try{
+const raw=localStorage.getItem('zs_run');
+if(!raw)return false;
+const o=JSON.parse(raw);
+if(!o||!rooms[o.room]||!o.S||!o.flags)return false;
+Object.assign(S,o.S);
+Object.assign(flags,o.flags);
+S.arrows=Math.max(S.arrows|0,save.arrows);
+tPlay=o.tp||0;bombCap=o.bc||20;
+for(const k in o.rs){
+const r=rooms[k],d=o.rs[k];
+if(!r||!d)continue;
+if(d.t&&d.t.length===r.tiles.length)for(let i=0;i<d.t.length;i++)r.tiles[i]=d.t[i];
+r.dirty=true;r.solved=!!d.s;r.cleared=!!d.c;r.seen=!!d.n;
+for(let i=0;i<r.enemies.length;i++)r.enemies[i].alive=!!(d.e&&d.e[i]);
+if(r.solved&&d.b)for(let i=0;i<r.blocks.length&&i<d.b.length;i++){
+const b=r.blocks[i];
+b.tx=d.b[i][0];b.ty=d.b[i][1];b.sx=b.tx;b.sy=b.ty;b.fx=b.tx;b.fy=b.ty;b.x=b.tx*T;b.y=b.ty*T;b.mt=1;b.moving=false;
+}
+}
+flags.asleep=false;
+S.hp=Math.max(S.hp,Math.min(S.max,6));
+enterRoom(rooms[o.room],o.tx,o.ty,2);
+mode='play';
+toast('이어서 시작합니다');
+return true;
+}catch(e){return false}
+}
+
 function afterEnter(){
+saveRun();
+if(cur.name)toast(cur.name);
 if(cur===rooms.boss&&!flags.bossDead&&!flags.bossFight){startBoss();return}
 if(cur.hint&&!cur.seen){cur.seen=true;say(cur.hint)}
 }
@@ -1020,13 +1215,19 @@ setTile(tx,ty,10);
 const c=cur.chest;
 if(c==='sword'){
 flags.sword=true;
-giveItem('sword',['낡은 검을 손에 넣었다!','공격 버튼(Z)으로 휘두를 수 있다. 걸으면서도 벨 수 있고, 항아리와 풀도 벨 수 있다.','(목소리의 주인을 구하러 성으로 가야 한다...)']);
+giveItem('sword',['낡은 검을 손에 넣었다!',(COARSE?'공격 버튼으로':'공격 버튼(Z)으로')+' 휘두를 수 있다. 걸으면서도 벨 수 있고, 항아리와 풀도 벨 수 있다.','(목소리의 주인을 구하러 성으로 가야 한다...)']);
 }else if(c==='key'){
 S.keys++;
 giveItem('key',['작은 열쇠를 손에 넣었다!','안뜰 북쪽의 잠긴 문을 열 수 있을 것 같다.']);
 }else if(c==='heart'){
 S.max+=2;S.hp=S.max;
 giveItem('heart',['하트 조각을 손에 넣었다!','최대 체력이 늘어나고 체력이 모두 회복되었다.']);
+}else if(c==='gems'){
+addCoins(50);
+giveItem('gems',['보석 50개를 찾았다!','화살로 수정을 맞혀 비밀 방을 열었다. 잘했다!']);
+}else if(c==='rich'){
+addCoins(100);
+giveItem('gems',['낡은 보물 상자다! 보석 100개를 손에 넣었다.','주인 없는 보물을 찾아냈다. 탐험한 보람이 있다!']);
 }else if(c==='bombs'){
 bombCap=30;S.bombs=Math.min(bombCap,S.bombs+10);
 giveItem('bombs',['폭탄 주머니를 손에 넣었다!','폭탄 10개를 얻었다. 이제 폭탄을 30개까지 들 수 있다.']);
@@ -1043,7 +1244,7 @@ beep(700,.1);
 if(!flags.bought){
 flags.bought=true;
 hideMsg();
-giveItem('bomb',['폭탄을 손에 넣었다!','C 버튼으로 앞에 설치하면 잠시 뒤 폭발한다. 금이 간 바위를 부술 수 있다.','(폭발에 휘말리면 나도 다친다. 설치하고 곧바로 물러나자.)']);
+giveItem('bomb',['폭탄을 손에 넣었다!',(COARSE?'폭탄 버튼으로':'C 키로')+' 앞에 설치하면 잠시 뒤 폭발한다. 금이 간 바위를 부술 수 있다.','(폭발에 휘말리면 나도 다친다. 설치하고 곧바로 물러나자.)']);
 }else{toast('폭탄 +5');renderMenu()}
 }},
 {t:'회복약 — 25보석',fn:()=>{
@@ -1064,7 +1265,7 @@ hasBow=true;S.arrows=Math.min(30,S.arrows+10);
 refreshBow();saveGame();
 menuItems=buildShop();menuIdx=0;
 hideMsg();
-giveItem('bow',['활을 손에 넣었다!','화살 10개도 함께 받았다. B 버튼(모바일은 활 버튼)으로 쏜다.','화살은 이 상점에서 더 살 수 있다. 활로 먼 적도 맞힐 수 있다.']);
+giveItem('bow',['활을 손에 넣었다!','화살 10개도 함께 받았다. '+(COARSE?'활 버튼으로':'B 키로')+' 쏜다.','화살은 이 상점에서 더 살 수 있다. 활로 먼 적도 맞힐 수 있다.']);
 }};
 const SHOP_ARROW={t:'화살 10개 — 20보석',fn:()=>{
 if(S.coins<20){toast('보석이 부족하다');return}
@@ -1109,6 +1310,7 @@ else if(!flags.bossDead)say(['조심하렴, 리오.','공주님을 부탁한다.
 else say(['해냈구나, 리오...','네가 우리 마을의 별이다.']);
 }else if(id==='kid'){
 if(!flags.bought)say(['항아리를 부수면 보석이 나온대!','풀숲도 칼로 베어 봐. 가끔 하트도 나와.']);
+else if(hasBow)say(['초원 오른쪽 위에 반짝이는 수정이 있어!','저건 칼로는 안 되고, 활로 맞혀야 할 것 같아.']);
 else say(['초원 북쪽 바위 뒤에 비밀 동굴이 있다던데...','폭탄으로 부수면 되려나?']);
 }else if(id==='girl'){
 say(['상점 주인 아저씨는 무뚝뚝해 보여도 좋은 사람이야.','그리고 숲 한가운데 분수의 물을 마시면 기운이 난대!']);
@@ -1118,6 +1320,14 @@ else say(['성 안쪽엔 철창으로 막힌 방이 있대요. 방 안의 적을
 }else if(id==='hermit'){
 if(!flags.hermit)say(['허허, 이 밤중에 숲을 지나는 젊은이로군.','저 분수를 조사하면 지친 몸이 모두 회복된단다. 다치면 언제든 오너라.','북동쪽 바위 안쪽에는 오래된 동굴이 있지. 폭탄이 있다면 가 보거라.','성 안에는 기사가 지키는 방이 있다. 기사는 팔을 뒤로 뺐다가 내려치니, 그때 거리를 벌려라.'],()=>{flags.hermit=true});
 else say(['분수를 잘 이용하거라.','몸이 상하면 다시 오렴. 행운을 빈다.']);
+}else if(id==='farmer'){
+say(['어서 오게, 젊은이! 노을 농장에 온 걸 환영하네.','저 오른쪽 위 바위 뒤에 오래된 동굴이 있다네. 폭탄이 필요하지.','헛간에서 항아리도 깨 보게. 보석이 나올지도 모르니.']);
+}else if(id==='farmer2'){
+say(['헛간 항아리에는 보석이 들어 있단다. 마음껏 깨도 좋아.','옛날엔 이 농장 옆 호수에 물고기가 가득했는데...']);
+}else if(id==='fisher'){
+say(['호수 한가운데로 뻗은 길 끝에 낡은 상자가 있지.','먼 옛날 어부가 숨긴 보물이라더군. 가 보게나.','호수 건너편으로 가면 잊힌 유적이 나온단다.']);
+}else if(id==='scholar'){
+say(['이곳은 옛 왕국의 유적이라네.','분수의 물은 지친 몸을 낫게 하지. 마음껏 쓰게.','성 남쪽 묘지 구석에 금 간 바위가 있다네. 그 아래는 옛 납골당이지.','가장 깊은 곳에는 기사가 지키는 보물이 잠들어 있다고 하네.','그리고 유적 구석의 풀숲 너머에도 오래된 상자가...']);
 }else if(id==='merchant'){
 say(save.clears>0&&!hasBow?['어서 오게, 꼬마! 폭탄과 약이 있지.','...자네, 성을 구한 그 영웅이군! 특별히 활도 들여놨다네.']:['어서 오게, 꼬마! 폭탄과 약이 있지.'],openShop);
 }
@@ -1201,6 +1411,14 @@ return;
 }
 }
 
+function crystalHit(){
+burst(cur.tiles.indexOf(35)%COLS*T+8,((cur.tiles.indexOf(35)/COLS)|0)*T+8,12,'#4fc3f7',80);
+if(cur.solved){beep(880,.08);return}
+cur.solved=true;
+toast('수정이 빛났다! 철창이 올라간다');
+openTiles(16,'#4fc3f7',true);
+}
+
 function updateArrows(dt){
 if(arrCd>0)arrCd-=dt;
 for(let i=0;i<ARR.length;i++){
@@ -1210,7 +1428,15 @@ a.x+=a.vx*dt;a.y+=a.vy*dt;
 const tx=Math.floor(a.x/T),ty=Math.floor(a.y/T);
 if(!inB(tx,ty)){a.on=false;continue}
 const id=cur.tiles[ty*COLS+tx];
+if(id===34)breakTile(tx,ty,34);
+else if(id===35){a.on=false;crystalHit();continue}
+else if(id===9||id===11){a.on=false;breakTile(tx,ty,id);continue}
 if(SOLID[id]||id===6||blockAt(tx,ty)){a.on=false;burst(a.x,a.y,4,'#cfd8dc',45);beep(260,.04,'square');continue}
+for(let k=0;k<ORBS.length;k++){
+const o=ORBS[k];
+if(o.on&&ov(a.x-2,a.y-2,4,4,o.x,o.y,6,6)){o.on=false;a.on=false;burst(o.x+3,o.y+3,6,'#f8bbd0',60);beep(660,.05);break}
+}
+if(!a.on)continue;
 const en=cur.enemies;
 let hit=false;
 for(let k=0;k<en.length;k++){
@@ -1350,10 +1576,12 @@ function finishGame(){
 flags.dawn=true;
 save.clears++;
 saveGame();
+try{localStorage.removeItem('zs_run')}catch(e){}
 mode='end';
 gearEl.style.display='none';
 const m=Math.floor(tPlay/60),s=Math.floor(tPlay%60);
-endText.textContent='새벽이 밝았다\n\n공주 세라는 무사히 돌아왔고\n성의 병사들도 제정신을 되찾았다.\n마을에는 아침 햇살과 함께 등불이 다시 켜졌다.\n\n— 끝 —\n\n플레이 시간 '+m+'분 '+s+'초\n소지금 '+S.coins+'보석은 저장되었다'+(save.clears===1?'\n(다음 플레이부터 상점에서 활을 살 수 있다)':'');
+const bowMsg=hasBow?'':save.clears===1?'\n\n★ 이제 상점에서 활을 살 수 있다! ★\n(150보석 · 다음 플레이에서 만나요)':'\n\n상점에서 활을 살 수 있다 (150보석)';
+endText.textContent='새벽이 밝았다\n\n공주 세라는 무사히 돌아왔고\n성의 병사들도 제정신을 되찾았다.\n마을에는 아침 햇살과 함께 등불이 다시 켜졌다.\n\n— 끝 —\n\n플레이 시간 '+m+'분 '+s+'초\n소지금 '+S.coins+'보석은 저장되었다'+bowMsg;
 endEl.style.display='flex';
 }
 
@@ -1563,7 +1791,7 @@ else P.pushT=0;
 }
 }
 
-const INTRO=['(...어둠 속에서 누군가 부르는 소리가 들린다.)','"...누구든... 제발... 도와주세요..."','머릿속을 울리는 가냘픈 목소리. 리오는 침대 위에서 눈을 번쩍 떴다.','(이 목소리... 성에서 들려오는 것 같아. 할아버지는 어디 가신 걸까?)','(탁자 위의 쪽지와 방 안의 상자를 살펴보자. X 조사 · Z 공격 · C 폭탄 · V 회복약 · Esc 설정)'];
+const INTRO=['(...어둠 속에서 누군가 부르는 소리가 들린다.)','"...누구든... 제발... 도와주세요..."','머릿속을 울리는 가냘픈 목소리. 리오는 침대 위에서 눈을 번쩍 떴다.','(이 목소리... 성에서 들려오는 것 같아. 할아버지는 어디 가신 걸까?)',COARSE?'(탁자 위의 쪽지와 방 안의 상자를 살펴보자. 오른쪽 버튼: 조사 · 공격 · 폭탄 · 약. 톱니바퀴는 설정)':'(탁자 위의 쪽지와 방 안의 상자를 살펴보자. X 조사 · Z 공격 · C 폭탄 · V 회복약 · Esc 설정)'];
 
 function wake(){flags.asleep=false;P.dir=2}
 
@@ -1617,7 +1845,7 @@ ig.t+=dt;
 if(ig.t>=2.1&&!ig.sayd){
 ig.sayd=true;
 const cb=ig.cb;
-say(ig.lns,()=>{ig=null;if(cb)cb()});
+say(ig.lns,()=>{ig=null;if(cb)cb();saveRun()});
 }
 return;
 }
@@ -1797,7 +2025,7 @@ ctx.fillStyle='#3e2723';ctx.fillRect(cx-2,cy-6,4,4);
 ctx.fillStyle='#ffca28';ctx.fillRect(cx-1,cy,3,10);ctx.fillRect(cx+2,cy+6,3,2);ctx.fillRect(cx+2,cy+9,3,2);
 ctx.fillStyle='#fff59d';ctx.fillRect(cx-4,cy-8,8,1);
 }else{
-ctx.drawImage(IC,48,0,12,12,cx-12,cy-12,24,24);
+ctx.drawImage(IC,k==='gems'?0:48,0,12,12,cx-12,cy-12,24,24);
 }
 }
 
@@ -2050,6 +2278,8 @@ ctx.fillStyle='#ffee58';ctx.fillRect(x+7,y+5-(f&1),2,3);
 }else if(id===32){
 const f=((gt*8)|0)&3;
 ctx.fillStyle='#e1f5fe';ctx.fillRect(x+7,y+2+f,2,2);ctx.fillRect(x+5+f,y+6,1,1);ctx.fillRect(x+10-f,y+7,1,1);
+}else if(id===35&&!r.solved){
+if(((gt*4+a[i]*.1)|0)&1){ctx.fillStyle='#ffffff';ctx.fillRect(x+7,y+4,2,2);ctx.fillRect(x+3,y+7,1,1);ctx.fillRect(x+12,y+3,1,1)}
 }else if(id===15&&!r.solved&&!covered(r,a[i]/T,a[i+1]/T)){
 if(Math.sin(gt*5)>0){
 ctx.fillStyle='#e8eaf6';
@@ -2154,6 +2384,7 @@ bSnd.textContent='소리: '+(opt.snd?'켜짐':'꺼짐');
 bBgm.textContent='배경음악: '+(opt.bgm?'켜짐':'꺼짐');
 volEl.value=opt.vol;volVal.textContent=opt.vol+'%';
 bFS.textContent='전체 화면: '+(document.fullscreenElement?'끄기':'켜기');
+bWipe.textContent=armedW?'정말 삭제할까요? 한 번 더 누르세요':'저장 데이터 삭제';
 bRestart.textContent=armed?'정말 재시작할까요? 한 번 더 누르세요':'재시작';
 }
 function openSettings(){
@@ -2161,13 +2392,13 @@ if(mode==='paused'||mode==='end')return;
 prevMode=mode;
 mode='paused';
 held.fill(0);
-armed=false;
+armed=false;armedW=false;
 labels();
 settingsEl.style.display='flex';
 }
 function closeSettings(){
 settingsEl.style.display='none';
-armed=false;
+armed=false;armedW=false;
 if(mode==='paused')mode=prevMode;
 }
 gearEl.addEventListener('click',openSettings);
@@ -2190,8 +2421,13 @@ bFS.addEventListener('click',toggleFS);
 document.addEventListener('fullscreenchange',labels);
 }else bFS.style.display='none';
 bRestart.addEventListener('click',()=>{
-if(armed){location.reload();return}
-armed=true;
+if(armed){try{localStorage.removeItem('zs_run')}catch(e){}location.reload();return}
+armed=true;armedW=false;
+labels();
+});
+bWipe.addEventListener('click',()=>{
+if(armedW){try{localStorage.removeItem('zs_run');localStorage.removeItem('zs_save')}catch(e){}location.reload();return}
+armedW=true;armed=false;
 labels();
 });
 document.getElementById('endBtn').addEventListener('click',()=>{location.reload()});
@@ -2272,7 +2508,7 @@ actA=false;actB=false;actC=false;actD=false;actE=false;tapUp=false;tapDown=false
 requestAnimationFrame(frame);
 }
 refreshBow();
-enterRoom(rooms.house,4,3,2);
+if(!loadRun())enterRoom(rooms.house,4,3,2);
 requestAnimationFrame(frame);
 </script>
 </body>
