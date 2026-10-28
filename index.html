@@ -266,7 +266,7 @@ house:{fl:0,kind:'in',map:[
 exits:[{x:7,y:12,to:'village',tx:4,ty:4,dir:2,need:'sword'},{x:8,y:12,to:'village',tx:4,ty:4,dir:2,need:'sword'}],
 edges:{},npcs:[],enemies:[],blocks:[],chest:'sword',signs:{}},
 village:{fl:2,kind:'out',map:[
-"tttttttttttttttt",
+"tttttttggttttttt",
 "tgRRRRggggZZZZgt",
 "tgRRRRggggYYYYgt",
 "tgWWdWggggZZdZgt",
@@ -281,7 +281,7 @@ village:{fl:2,kind:'out',map:[
 "twwgggggggggggtt",
 "tttttttggttttttt"],
 exits:[{x:4,y:3,to:'house',tx:7,ty:11,dir:0},{x:12,y:3,to:'shop',tx:7,ty:11,dir:0}],
-edges:{right:'meadow',down:'farm'},name:'별빛 마을',
+edges:{right:'meadow',down:'farm',up:'orchard'},name:'별빛 마을',
 npcs:[[8,6,'grandpa','#8d6e63','#eceff1'],[6,10,'kid','#fbc02d','#6d4c41'],[12,8,'girl','#ab47bc','#5d4037']],enemies:[],blocks:[],
 labels:[{x:64,y:29,t:'우리 집',c:'#8d5a2b'},{x:192,y:29,t:'상점',c:'#c62828'}],
 signs:{'8,4':['별빛 마을','오늘 밤은 마을의 등불이 모두 꺼져 있다.']}},
@@ -303,8 +303,8 @@ shop:{fl:29,kind:'in',map:[
 exits:[{x:7,y:12,to:'village',tx:12,ty:4,dir:2},{x:8,y:12,to:'village',tx:12,ty:4,dir:2}],
 edges:{},npcs:[[7,2,'merchant','#00897b','#4e342e']],enemies:[],blocks:[],labels:[{x:128,y:8,t:'상점',c:'#c62828'}],signs:{}},
 meadow:{fl:2,kind:'out',map:[
-"tttttttttttttttt",
-"ttttxttttttttctt",
+"tttttttggttttttt",
+"ttttxttggttttctt",
 "tgugggggoggggGtt",
 "tgghhhgggggjgggt",
 "gggggggggggggggg",
@@ -318,7 +318,7 @@ meadow:{fl:2,kind:'out',map:[
 "tgggggggggggggut",
 "tttttttggttttttt"],
 exits:[{x:4,y:1,to:'cave',tx:7,ty:11,dir:0}],
-edges:{left:'village',right:'forest',down:'lake'},chest:'gems',name:'초원',
+edges:{left:'village',right:'forest',down:'lake',up:'hills'},chest:'gems',name:'초원',
 npcs:[[12,3,'traveler','#3949ab','#212121']],
 enemies:[[6,3,'s'],[11,7,'s'],[8,10,'s'],[3,7,'s'],[12,8,'b']],blocks:[],signs:{}},
 cave:{fl:5,kind:'in',map:[
@@ -339,7 +339,7 @@ cave:{fl:5,kind:'in',map:[
 exits:[{x:7,y:12,to:'meadow',tx:4,ty:2,dir:2},{x:8,y:12,to:'meadow',tx:4,ty:2,dir:2}],
 edges:{},npcs:[],enemies:[],blocks:[],chest:'heart',signs:{}},
 forest:{fl:2,kind:'out',map:[
-"tttttttttttttttt",
+"tttttttggttttttt",
 "tgggtggggggtgggt",
 "tggggtghhhhxgggt",
 "tgFggggggggggggt",
@@ -353,8 +353,8 @@ forest:{fl:2,kind:'out',map:[
 "tgghhhhgggggggut",
 "tgggoggggggggggt",
 "tttttttggttttttt"],
-exits:[{x:12,y:2,to:'cave2',tx:7,ty:11,dir:0}],
-edges:{left:'meadow',right:'castle',down:'ruins'},name:'속삭이는 숲',
+exits:[{x:11,y:2,to:'cave2',tx:7,ty:11,dir:0}],
+edges:{left:'meadow',right:'castle',down:'ruins',up:'shrine'},name:'속삭이는 숲',
 npcs:[[4,3,'hermit','#546e7a','#cfd8dc']],
 enemies:[[6,2,'s'],[10,8,'s'],[13,3,'b'],[8,10,'b'],[11,6,'k'],[3,9,'s']],blocks:[],
 signs:{}},
@@ -373,7 +373,7 @@ cave2:{fl:5,kind:'in',map:[
 "#,,,,,,,,,,,,,,#",
 "#,,,,,,dd,,,,,,#",
 "################"],
-exits:[{x:7,y:12,to:'forest',tx:12,ty:3,dir:2},{x:8,y:12,to:'forest',tx:12,ty:3,dir:2}],
+exits:[{x:7,y:12,to:'forest',tx:11,ty:3,dir:2},{x:8,y:12,to:'forest',tx:11,ty:3,dir:2}],
 edges:{},npcs:[],enemies:[],blocks:[],chest:'bombs',signs:{}},
 castle:{fl:2,kind:'out',map:[
 "tttttttttttttttt",
@@ -497,9 +497,9 @@ farm:{fl:2,kind:'out',name:'노을 농장',map:[
 "tghhhgggggoggutt",
 "tggggggggggggutt",
 "tgggggggggggggtt",
-"tttttttttttttttt"],
+"tttttttggttttttt"],
 exits:[{x:4,y:4,to:'barn',tx:7,ty:11,dir:0},{x:13,y:1,to:'cave3',tx:7,ty:11,dir:0}],
-edges:{up:'village',right:'lake'},
+edges:{up:'village',right:'lake',down:'beach'},
 npcs:[[8,6,'farmer','#7cb342','#ffd54f']],enemies:[[10,8,'s'],[5,10,'s'],[12,5,'b']],blocks:[],signs:{}},
 barn:{fl:0,kind:'in',map:[
 "################",
@@ -549,9 +549,9 @@ lake:{fl:2,kind:'out',name:'거울 호수',map:[
 "tgggggggggggggut",
 "tgugggggggoggggt",
 "tggggggggggggggt",
-"tttttttttttttttt"],
+"tttttttggttttttt"],
 exits:[],
-edges:{up:'meadow',left:'farm',right:'ruins'},chest:'rich',
+edges:{up:'meadow',left:'farm',right:'ruins',down:'port'},chest:'rich',
 npcs:[[3,3,'fisher','#00838f','#eeeeee']],enemies:[[3,10,'s'],[12,10,'s'],[13,2,'b'],[2,6,'b']],blocks:[],signs:{}},
 ruins:{fl:2,kind:'out',name:'잊힌 유적',map:[
 "tttttttggttttttt",
@@ -567,9 +567,9 @@ ruins:{fl:2,kind:'out',name:'잊힌 유적',map:[
 "tggggggggggggggt",
 "tgugggggggggggut",
 "tgggggggoggggggt",
-"tttttttttttttttt"],
+"tttttttggttttttt"],
 exits:[],
-edges:{up:'forest',left:'lake',right:'grave'},chest:'rich',
+edges:{up:'forest',left:'lake',right:'grave',down:'canyon'},chest:'rich',
 npcs:[[10,3,'scholar','#6a1b9a','#e0e0e0']],enemies:[[6,6,'k'],[10,7,'k'],[4,9,'b'],[12,9,'b']],blocks:[],signs:{}},
 grave:{fl:2,kind:'out',name:'달무리 묘지',map:[
 "tttttttggttttttt",
@@ -585,9 +585,9 @@ grave:{fl:2,kind:'out',name:'달무리 묘지',map:[
 "tgxggggggggggutt",
 "tggggggggggggutt",
 "tgggggggggoggggt",
-"tttttttttttttttt"],
+"tttttttggttttttt"],
 exits:[{x:2,y:10,to:'crypt1',tx:7,ty:11,dir:0}],
-edges:{up:'castle',left:'ruins'},
+edges:{up:'castle',left:'ruins',down:'swamp'},
 npcs:[],enemies:[[6,4,'k'],[10,7,'k'],[4,6,'b'],[12,3,'b'],[8,10,'s']],blocks:[],signs:{}},
 crypt1:{fl:13,kind:'dun',shut:true,name:'낡은 납골당',map:[
 "%%%%%%%dd%%%%%%%",
@@ -625,6 +625,256 @@ crypt2:{fl:13,kind:'dun',name:'납골당 깊은 곳',map:[
 exits:[{x:7,y:12,to:'crypt1',tx:7,ty:2,dir:2},{x:8,y:12,to:'crypt1',tx:8,ty:2,dir:2}],
 edges:{},npcs:[],enemies:[[7,6,'K'],[4,8,'b'],[11,8,'b']],blocks:[],chest:'heart',signs:{},
 hint:['(납골당 가장 깊은 곳이다. 반짝이는 상자가 보인다.)','(그 앞을 기사가 지키고 있다!)']},
+orchard:{fl:2,kind:'out',name:'사과 과수원',map:[
+"tttttttttttttttt",
+"tgggggggggggcggt",
+"tgutgutgutgutggt",
+"tggggggggggggggt",
+"tgutgutgutgutggg",
+"tggggggggggggggg",
+"tgutgutgutgutggg",
+"tggggggggggggggg",
+"tgutgutgutgutggg",
+"tgggggggggggggtt",
+"tghhggggggggggut",
+"tgggggggggoggggt",
+"tggggggggggggggt",
+"tttttttggttttttt"],
+exits:[],
+edges:{down:'village',right:'hills'},chest:'potion',
+npcs:[[3,9,'gardener','#8bc34a','#795548']],enemies:[[5,5,'s'],[11,7,'s'],[9,3,'b']],blocks:[],signs:{}},
+hills:{fl:2,kind:'out',name:'바람 언덕',map:[
+"tttttttttttttttt",
+"tggggggggggggggt",
+"tgggggxggggggggt",
+"tggggggggggggggt",
+"gggggggggggggggg",
+"gghhhhgggggggggg",
+"ggggggggggiggggg",
+"gghhhhgggggggggg",
+"gggggggggggggggg",
+"tgggggggggggggut",
+"tgugggggggoggggt",
+"tgggggggggggggut",
+"tggggggggggggggt",
+"tttttttggttttttt"],
+exits:[{x:6,y:2,to:'cave4',tx:7,ty:11,dir:0}],
+edges:{down:'meadow',left:'orchard',right:'shrine'},
+npcs:[[12,6,'shepherd','#e0e0e0','#bcaaa4']],enemies:[[4,3,'b'],[9,8,'s'],[13,5,'k']],blocks:[],signs:{}},
+cave4:{fl:5,kind:'in',map:[
+"################",
+"#,,,,,,,,,,,,,,#",
+"#,,,,,,,,,,,,,,#",
+"#,,,,,,c,,,,,,,#",
+"#,,,,,,,,,,,,,,#",
+"#,,,,,,,,,,,,,,#",
+"#,,,,,,,,,,,,,,#",
+"#,,,,,,,,,,,,,,#",
+"#,,,,,,,,,,,,,,#",
+"#,,,,,,,,,,,,,,#",
+"#,,,,,,,,,,,,,,#",
+"#,,,,,,,,,,,,,,#",
+"#,,,,,,dd,,,,,,#",
+"################"],
+exits:[{x:7,y:12,to:'hills',tx:6,ty:3,dir:2},{x:8,y:12,to:'hills',tx:6,ty:3,dir:2}],
+edges:{},npcs:[],enemies:[[3,5,'s'],[11,5,'s']],blocks:[],chest:'rich',gem:80,signs:{}},
+shrine:{fl:2,kind:'out',name:'숲의 신전 앞',map:[
+"tttttttttttttttt",
+"t%%%%%%d%%%%%%%t",
+"t%%%%%%L%%%%%%%t",
+"tggggggggggggggt",
+"gggggggggggggggt",
+"gghhhggggggggggt",
+"gggggggggggggggt",
+"gggggiggggiggggt",
+"gggggggggggggggt",
+"tgggggggggggggtt",
+"tggugggggggggutt",
+"tgggggggggoggggt",
+"tggggggggggggggt",
+"tttttttggttttttt"],
+exits:[{x:7,y:1,to:'temple1',tx:7,ty:11,dir:0}],
+edges:{down:'forest',left:'hills'},
+npcs:[[9,4,'monk','#f9a825','#ffffff']],enemies:[[5,5,'k'],[11,6,'k'],[8,9,'s'],[3,8,'b']],blocks:[],signs:{}},
+temple1:{fl:13,kind:'dun',shut:true,name:'숲의 신전',map:[
+"%%%%%%%dd%%%%%%%",
+"%______SS______%",
+"%_i____________%",
+"%______________%",
+"%__%%______%%__%",
+"%__%%______%%__%",
+"%______________%",
+"%_i__________i_%",
+"%______________%",
+"%______________%",
+"%_i__________i_%",
+"%______________%",
+"%%%%%%%dd%%%%%%%",
+"%%%%%%%%%%%%%%%%"],
+exits:[{x:7,y:12,to:'shrine',tx:7,ty:3,dir:2},{x:8,y:12,to:'shrine',tx:7,ty:3,dir:2},{x:7,y:0,to:'temple2',tx:7,ty:11,dir:0},{x:8,y:0,to:'temple2',tx:8,ty:11,dir:0}],
+edges:{},npcs:[],enemies:[[4,3,'k'],[11,3,'k'],[4,9,'k'],[11,9,'k'],[7,6,'b']],blocks:[],signs:{},
+hint:['(고요한 신전 안이다. 병사들의 눈이 붉게 빛난다.)','(모두 쓰러뜨리면 북쪽 철창이 열릴 것 같다.)']},
+temple2:{fl:13,kind:'dun',name:'신전 안쪽',map:[
+"%%%%%%%%%%%%%%%%",
+"%%%%%%__c_%%%%%%",
+"%%%%%%____%%%%%%",
+"%%%%%%GGGG%%%%%%",
+"%i____________i%",
+"%______________%",
+"%__s___________%",
+"%______________%",
+"%______________%",
+"%______________%",
+"%_i__________i_%",
+"%______________%",
+"%%%%%%%dd%%%%%%%",
+"%%%%%%%%%%%%%%%%"],
+exits:[{x:7,y:12,to:'temple1',tx:7,ty:2,dir:2},{x:8,y:12,to:'temple1',tx:8,ty:2,dir:2}],
+edges:{},npcs:[],enemies:[[5,10,'k'],[11,10,'k'],[7,6,'b']],blocks:[[8,8]],chest:'sword2',signs:{},
+hint:['(바닥에 푸른 발판이 하나, 회색 블록이 하나 있다.)','(블록을 발판 위에 올리면 북쪽 철창이 열릴 것 같다.)']},
+beach:{fl:5,kind:'out',name:'노을 해변',map:[
+"tttttttggttttttt",
+"tppppppppppppppt",
+"tpppptpppppptppt",
+"tppppppppppppppt",
+"tppppppppppppppp",
+"tppppppppppppppp",
+"tppptppppppppppp",
+"tpppppppppppoppp",
+"tppppppppppppppp",
+"tppppppppppppppt",
+"twwwwwwpwwwwwwwt",
+"twwwwwwcwwwwwwwt",
+"twwwwwwwwwwwwwwt",
+"tttttttttttttttt"],
+exits:[],
+edges:{up:'farm',right:'port'},chest:'rich',gem:60,
+npcs:[[12,3,'sailor','#1565c0','#ffffff']],enemies:[[5,3,'s'],[10,6,'s'],[8,8,'b']],blocks:[],signs:{}},
+port:{fl:2,kind:'out',name:'바다 마을 항구',map:[
+"tttttttggttttttt",
+"tggggggggggggggt",
+"tgRRRRggggZZZZgt",
+"tgRRRRggggYYYYgt",
+"gpWWdWppppZZdZpp",
+"gppppppppppppppp",
+"ggggggggnggggggg",
+"gggoggggggggoggg",
+"gggggggggggggggg",
+"tggggggggggggggt",
+"tgugggggggggguut",
+"tggggggggggggggt",
+"tgggggggggggggtt",
+"tttttttttttttttt"],
+exits:[{x:4,y:4,to:'inn',tx:7,ty:11,dir:0},{x:12,y:4,to:'shop2',tx:7,ty:11,dir:0}],
+edges:{up:'lake',left:'beach',right:'canyon'},
+labels:[{x:64,y:45,t:'여관',c:'#2e7d32'},{x:192,y:45,t:'상점',c:'#c62828'}],
+npcs:[[10,6,'sailor2','#00acc1','#f5f5f5'],[6,9,'child2','#ffb74d','#6d4c41']],enemies:[],blocks:[],
+signs:{'8,6':['바다 마을 항구','여관 · 상점 · 호수와 협곡 가는 길']}},
+inn:{fl:0,kind:'in',map:[
+"################",
+"#..............#",
+"#.bb.bb.bb.bb..#",
+"#.BB.BB.BB.BB..#",
+"#..............#",
+"#.....T........#",
+"#..............#",
+"#..............#",
+"#..............#",
+"#..............#",
+"#..............#",
+"#..............#",
+"#......dd......#",
+"################"],
+exits:[{x:7,y:12,to:'port',tx:4,ty:5,dir:2},{x:8,y:12,to:'port',tx:4,ty:5,dir:2}],
+edges:{},npcs:[[7,4,'innkeeper','#5d4037','#fafafa']],enemies:[],blocks:[],signs:{}},
+shop2:{fl:29,kind:'in',map:[
+"ZZZZZZZZZZZZZZZZ",
+"ZfkkkkffffkkkkfZ",
+"ZffffffffffffffZ",
+"ZfffCCCCCCfffffZ",
+"ZffffffffffffffZ",
+"ZffffffffffffffZ",
+"ZffffffffffffffZ",
+"ZffffffffffffffZ",
+"ZffffffffffffffZ",
+"ZffffffffffffffZ",
+"ZffffffffffffffZ",
+"ZffffffffffffffZ",
+"ZffffffddffffffZ",
+"ZZZZZZZZZZZZZZZZ"],
+exits:[{x:7,y:12,to:'port',tx:12,ty:5,dir:2},{x:8,y:12,to:'port',tx:12,ty:5,dir:2}],
+edges:{},npcs:[[7,2,'trader','#6a1b9a','#ffd54f']],enemies:[],blocks:[],labels:[{x:128,y:8,t:'상점',c:'#c62828'}],signs:{}},
+canyon:{fl:5,kind:'out',name:'메마른 협곡',map:[
+"tttttttggttttttt",
+"tppppppppppppppt",
+"tppippppppppxppt",
+"tppppppppppppppt",
+"pppppppipppppppp",
+"pppipppppppppipp",
+"pppppppppppppppp",
+"pppppppppipppppp",
+"pppipppppppppppp",
+"tppppppppppppppt",
+"tpppppppppoppppt",
+"tppppppppppppppt",
+"tppppppppppppppt",
+"tttttttttttttttt"],
+exits:[{x:12,y:2,to:'cave5',tx:7,ty:11,dir:0}],
+edges:{up:'ruins',left:'port',right:'swamp'},
+npcs:[[3,6,'miner','#8d6e63','#ffeb3b']],enemies:[[5,3,'k'],[10,6,'k'],[8,9,'b'],[13,4,'s']],blocks:[],signs:{}},
+cave5:{fl:5,kind:'in',map:[
+"################",
+"#,,,,,,,,,,,,,,#",
+"#,,,,,,,,,,,,,,#",
+"#,,,,,,c,,,,,,,#",
+"#,,,,,,,,,,,,,,#",
+"#,,,,,,,,,,,,,,#",
+"#,,,,,,,,,,,,,,#",
+"#,,,,,,,,,,,,,,#",
+"#,,,,,,,,,,,,,,#",
+"#,,,,,,,,,,,,,,#",
+"#,,,,,,,,,,,,,,#",
+"#,,,,,,,,,,,,,,#",
+"#,,,,,,dd,,,,,,#",
+"################"],
+exits:[{x:7,y:12,to:'canyon',tx:12,ty:3,dir:2},{x:8,y:12,to:'canyon',tx:12,ty:3,dir:2}],
+edges:{},npcs:[],enemies:[[3,6,'b'],[11,6,'b'],[5,9,'b'],[10,9,'b'],[7,5,'s']],blocks:[],chest:'heart',signs:{}},
+swamp:{fl:2,kind:'out',name:'안개 늪',map:[
+"tttttttggttttttt",
+"tggggggggggggggt",
+"tgwwwgggggRRRRgt",
+"tgwwwgggggRRRRgt",
+"gggwwgggggWWdWgt",
+"ggggggggggggpggt",
+"gggwwwggggghhhgt",
+"gggwwwgggggggggt",
+"gggggggggggggggt",
+"tggggwwwggggggtt",
+"tgggwwwwwgghhgut",
+"tgugggwwwgggggut",
+"tggggggggggggggt",
+"tttttttttttttttt"],
+exits:[{x:12,y:4,to:'hut',tx:7,ty:11,dir:0}],
+edges:{up:'grave',left:'canyon'},
+labels:[{x:192,y:45,t:'마녀의 집',c:'#4a148c'}],
+npcs:[],enemies:[[6,3,'s'],[8,7,'s'],[10,10,'s'],[12,7,'k'],[10,9,'b']],blocks:[],signs:{}},
+hut:{fl:0,kind:'in',map:[
+"################",
+"#kkk........kkk#",
+"#..............#",
+"#.....T.T......#",
+"#..............#",
+"#..............#",
+"#..............#",
+"#..............#",
+"#..............#",
+"#..............#",
+"#.............o#",
+"#..............#",
+"#......dd......#",
+"################"],
+exits:[{x:7,y:12,to:'swamp',tx:12,ty:5,dir:2},{x:8,y:12,to:'swamp',tx:12,ty:5,dir:2}],
+edges:{},npcs:[[7,3,'witch','#4a148c','#212121']],enemies:[],blocks:[],signs:{}},
 boss:{fl:13,kind:'dun',map:[
 "%%%%%%%%%%%%%%%%",
 "%____%___%_____%",
@@ -774,7 +1024,7 @@ try{localStorage.setItem('zs_save',JSON.stringify(save))}catch(e){}
 const ARR=[];
 for(let i=0;i<6;i++)ARR.push({on:false,x:0,y:0,vx:0,vy:0,d:0});
 let arrCd=0;
-const flags={asleep:true,sword:false,met:false,bought:false,gate:false,bossFight:false,bossSeen:false,bossDead:false,dawn:false,knight:false,hermit:false};
+const flags={sword2:false,witch:false,asleep:true,sword:false,met:false,bought:false,gate:false,bossFight:false,bossSeen:false,bossDead:false,dawn:false,knight:false,hermit:false};
 const P={tx:4,ty:3,fx:4,fy:3,x:64,y:48,dir:2,mt:1,moving:false,step:.15,att:0,ad:2,inv:0,pushT:0,anim:0,bump:null};
 const B={active:false,dying:false,dt:0,hp:12,max:12,tx:7,ty:3,state:0,t:0,hit:0,vis:false,sum:false,aim:0,rx:0,ry:0,flash:0};
 const BS_WAIT=0,BS_CAST=1,BS_VULN=2,BS_TELE=3,BS_HIT=4;
@@ -1237,8 +1487,15 @@ giveItem('heart',['하트 조각을 손에 넣었다!','최대 체력이 늘어�
 addCoins(50);
 giveItem('gems',['보석 50개를 찾았다!','화살로 수정을 맞혀 비밀 방을 열었다. 잘했다!']);
 }else if(c==='rich'){
-addCoins(100);
-giveItem('gems',['낡은 보물 상자다! 보석 100개를 손에 넣었다.','주인 없는 보물을 찾아냈다. 탐험한 보람이 있다!']);
+const g=cur.gem||100;
+addCoins(g);
+giveItem('gems',['낡은 보물 상자다! 보석 '+g+'개를 손에 넣었다.','주인 없는 보물을 찾아냈다. 탐험한 보람이 있다!']);
+}else if(c==='potion'){
+S.potions=Math.min(9,S.potions+2);
+giveItem('potion',['회복약 2개를 손에 넣었다!','V 키나 약 버튼으로 체력을 모두 회복할 수 있다.']);
+}else if(c==='sword2'){
+flags.sword2=true;
+giveItem('sword2',['신전의 검을 손에 넣었다!','검의 위력이 두 배가 되었다! 칼날이 금빛으로 빛난다.']);
 }else if(c==='bombs'){
 bombCap=30;S.bombs=Math.min(bombCap,S.bombs+10);
 giveItem('bombs',['폭탄 주머니를 손에 넣었다!','폭탄 10개를 얻었다. 이제 폭탄을 30개까지 들 수 있다.']);
@@ -1269,6 +1526,33 @@ renderMenu();
 }},
 {t:'나가기',fn:null}
 ];
+const INN=[
+{t:'쉬어 간다 — 10보석',fn:()=>{
+if(S.hp>=S.max){toast('이미 쌩쌩하다');return}
+if(S.coins<10){toast('보석이 부족하다');return}
+S.coins-=10;
+S.hp=S.max;
+jingle(JG_SMALL);
+toast('푹 쉬고 체력이 모두 회복되었다');
+saveRun();
+renderMenu();
+}},
+{t:'나가기',fn:null}
+];
+function buildWitch(){
+const a=[];
+if(!flags.witch)a.push({t:'생명의 약 — 80보석',fn:()=>{
+if(S.coins<80){toast('보석이 부족하다');return}
+S.coins-=80;
+flags.witch=true;
+S.max=Math.min(40,S.max+2);S.hp=S.max;
+menuItems=buildWitch();menuIdx=0;
+hideMsg();
+giveItem('heart',['생명의 약을 마셨다!','최대 체력이 하트 한 칸 늘어나고 체력이 모두 회복되었다.']);
+}});
+a.push({t:'나가기',fn:null});
+return a;
+}
 const SHOP_BOW={t:'활 — 150보석',fn:()=>{
 if(S.coins<150){toast('보석이 부족하다');return}
 S.coins-=150;
@@ -1301,6 +1585,8 @@ let s='보유 보석: '+S.coins+'\n';
 for(let i=0;i<menuItems.length;i++)s+=(i===menuIdx?'▶ ':'    ')+menuItems[i].t+'\n';
 showMsg(s);
 }
+function openInn(){menuItems=INN;menuIdx=0;mode='menu';renderMenu()}
+function openWitch(){menuItems=buildWitch();menuIdx=0;mode='menu';renderMenu()}
 function openShop(){menuItems=buildShop();menuIdx=0;mode='menu';renderMenu()}
 function closeMenu(){hideMsg();mode='play'}
 
@@ -1339,6 +1625,26 @@ say(['헛간 항아리에는 보석이 들어 있단다. 마음껏 깨도 좋아
 say(['호수 한가운데로 뻗은 길 끝에 낡은 상자가 있지.','먼 옛날 어부가 숨긴 보물이라더군. 가 보게나.','호수 건너편으로 가면 잊힌 유적이 나온단다.']);
 }else if(id==='scholar'){
 say(['이곳은 옛 왕국의 유적이라네.','분수의 물은 지친 몸을 낫게 하지. 마음껏 쓰게.','성 남쪽 묘지 구석에 금 간 바위가 있다네. 그 아래는 옛 납골당이지.','가장 깊은 곳에는 기사가 지키는 보물이 잠들어 있다고 하네.','그리고 유적 구석의 풀숲 너머에도 오래된 상자가...']);
+}else if(id==='gardener'){
+say(['이 과수원의 사과는 정말 맛있지.','오른쪽 위 구석 상자 속에는 약이 들어 있다네.']);
+}else if(id==='shepherd'){
+say(['언덕 위쪽 바위 하나에 금이 가 있지.','폭탄으로 부수면 작은 동굴이 나온단다.']);
+}else if(id==='monk'){
+say(['이곳은 숲의 신전이라네. 안쪽에는 낡은 검이 잠들어 있지.','신전 문은 열쇠로만 열린다네.','열쇠는 성 안뜰과 동쪽 별관에서 찾을 수 있다더군.']);
+}else if(id==='sailor'){
+say(['해변 한가운데 바다로 뻗은 길 끝에 상자가 보이지?','옆 항구 마을에는 여관과 상점이 있어.']);
+}else if(id==='sailor2'){
+say(['항구에 어서 오게. 여관에서 쉬면 체력이 가득 찬다네.','협곡 너머 늪에는 마녀가 산다는 소문이야.']);
+}else if(id==='child2'){
+say(['협곡 위쪽 바위 뒤에서 이상한 소리가 났어!','박쥐 소리 같았는데... 무서워.']);
+}else if(id==='miner'){
+say(['이 협곡 바위 뒤 동굴에는 박쥐 떼가 산다네.','그래도 안쪽에 하트 조각이 있다던데...']);
+}else if(id==='witch'){
+say(flags.witch?['히히, 생명의 약은 효과가 좋았지?','또 오렴.']:['히히히... 늪까지 찾아오다니 대단하구나.','내 생명의 약을 마시면 하트가 한 칸 늘어난단다.','딱 하나뿐이야. 80보석에 어때?'],openWitch);
+}else if(id==='innkeeper'){
+say(['어서 오세요! 쉬어 가시겠어요? 10보석입니다.'],openInn);
+}else if(id==='trader'){
+say(['어서 오세요! 항구 상점입니다.'],openShop);
 }else if(id==='merchant'){
 say(save.clears>0&&!hasBow?['어서 오게, 꼬마! 폭탄과 약이 있지.','...자네, 성을 구한 그 영웅이군! 특별히 활도 들여놨다네.']:['어서 오게, 꼬마! 폭탄과 약이 있지.'],openShop);
 }
@@ -1473,9 +1779,9 @@ if(id===9||id===11||id===34)breakTile(tx,ty,id);
 const en=cur.enemies;
 for(let i=0;i<en.length;i++){
 const e=en[i];
-if(e.alive&&e.hit<=0&&ov(rx,ry,14,14,e.x+2,e.y+2,12,12))damageEnemy(e,1,x+8,y+8);
+if(e.alive&&e.hit<=0&&ov(rx,ry,14,14,e.x+2,e.y+2,12,12))damageEnemy(e,flags.sword2?2:1,x+8,y+8);
 }
-if(B.active&&B.vis&&B.hit<=0&&ov(rx,ry,14,14,B.tx*T+2,B.ty*T+2,12,12))hitBoss(1);
+if(B.active&&B.vis&&B.hit<=0&&ov(rx,ry,14,14,B.tx*T+2,B.ty*T+2,12,12))hitBoss(flags.sword2?2:1);
 for(let i=0;i<ORBS.length;i++){
 const o=ORBS[i];
 if(o.on&&ov(rx,ry,14,14,o.x,o.y,6,6)){o.on=false;beep(660,.05);burst(o.x+3,o.y+3,5,'#f8bbd0',60)}
@@ -2011,9 +2317,9 @@ for(let i=0;i<en.length;i++)if(en[i].alive)drawEnemy(en[i],ox,oy);
 }
 
 function drawItemIcon(k,cx,cy){
-if(k==='sword'){
+if(k==='sword'||k==='sword2'){
 ctx.fillStyle='#fff';ctx.fillRect(cx-1,cy-12,3,1);
-ctx.fillStyle='#eceff1';ctx.fillRect(cx-1,cy-11,3,13);
+ctx.fillStyle=k==='sword2'?'#ffe082':'#eceff1';ctx.fillRect(cx-1,cy-11,3,13);
 ctx.fillStyle='#fff';ctx.fillRect(cx-1,cy-11,1,13);
 ctx.fillStyle='#90a4ae';ctx.fillRect(cx+1,cy-10,1,12);
 ctx.fillStyle='#ffca28';ctx.fillRect(cx-4,cy+2,9,2);
@@ -2036,7 +2342,7 @@ ctx.fillStyle='#3e2723';ctx.fillRect(cx-2,cy-6,4,4);
 ctx.fillStyle='#ffca28';ctx.fillRect(cx-1,cy,3,10);ctx.fillRect(cx+2,cy+6,3,2);ctx.fillRect(cx+2,cy+9,3,2);
 ctx.fillStyle='#fff59d';ctx.fillRect(cx-4,cy-8,8,1);
 }else{
-ctx.drawImage(IC,k==='gems'?0:48,0,12,12,cx-12,cy-12,24,24);
+ctx.drawImage(IC,k==='gems'?0:k==='potion'?36:48,0,12,12,cx-12,cy-12,24,24);
 }
 }
 
@@ -2082,7 +2388,7 @@ ctx.fillRect(R(cx+Math.cos(a2)*(rr-3)),R(cy+Math.sin(a2)*(rr-3)),2,2);
 }
 const ca=Math.cos(an),sa=Math.sin(an);
 for(let rr=4;rr<=15;rr+=2){
-ctx.fillStyle=rr>13?'#fff':'#cfd8dc';
+ctx.fillStyle=rr>13?'#fff':flags.sword2?'#ffd54f':'#cfd8dc';
 ctx.fillRect(R(cx+ca*rr),R(cy+sa*rr),2,2);
 }
 ctx.fillStyle='#ffca28';
